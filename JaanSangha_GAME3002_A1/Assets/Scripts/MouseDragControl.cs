@@ -5,23 +5,21 @@ using UnityEngine.UI;
 
 public class MouseDragControl : MonoBehaviour
 {
-    private Vector3 fp; //First finger position
-    private Vector3 lp; //Last finger position
+    private Vector3 firstP; //First mouse position
+    private Vector3 lastP; //Last mouse position
     private float dragDistance;  //Distance needed for a swipe to register
     public bool triggered = false;
+
     //variables for determining the shot power and position
-    public float power;  //power at which the ball is shot
-    private Vector3 footballPos; //initial football position for replacing the ball at the same posiiton
-    private float factor = 34f; // keep this factor constant, also used to determine force of shot
-    public bool canShoot = true;  //flag to check if shot can be taken
-    public int scorePlayer = 0;  //score of player
+    public float power;  //shot power
+    private Vector3 footballPos;    //initial ball position 
+    private float factor = 34f; //force of shot
+    public bool canShoot = true;  //check if shot can be taken
+    public int scorePlayer = 0;
     public int turn = 0;   //0 for striker, 1 for goalie
     public bool isGameOver = false; //flag for game over detection
-    Vector3 oppKickDir;   //direction at which the ball is kicked by opponent
-    public int shotsTaken = 0;  //number of rounds of penalties taken
-    private bool returned = true;  //flag to check if the ball is returned to its initial position
-    public bool isKickedPlayer = false; //flag to check if the player has kicked the ball
-    public bool isKickedOpponent = false; //flag to check if the opponent has kicked the ball
+    private bool returned = true;  //check if the ball is returned to its initial position
+    public bool isKickedPlayer = false;     //check if the player has kicked the ball
     public Rigidbody rb;
     public Text countText;
     private int count;
@@ -55,36 +53,26 @@ public class MouseDragControl : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            fp = Input.mousePosition;
-            lp = Input.mousePosition;
+            firstP = Input.mousePosition;
+            lastP = Input.mousePosition;
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            lp = Input.mousePosition;
+            lastP = Input.mousePosition;
 
-            if (fp.x > lp.x)
-            {
-                Debug.Log("Mouse moved left");
-            }
-            else if (fp.x < lp.x)
-            {
-                Debug.Log("Mouse moved right");
-            }
-
-
-            if (Mathf.Abs(lp.x - fp.x) > dragDistance || Mathf.Abs(lp.y - fp.y) > dragDistance)
+            if (Mathf.Abs(lastP.x - firstP.x) > dragDistance || Mathf.Abs(lastP.y - firstP.y) > dragDistance)
             {   //It's a drag
 
                 //x and y repesent force to be added in the x, y axes.
-                float x = (lp.x - fp.x) / Screen.height * factor;
-                float y = (lp.y - fp.y) / Screen.height * factor;
+                float x = (lastP.x - firstP.x) / Screen.height * factor;
+                float y = (lastP.y - firstP.y) / Screen.height * factor;
                 //Now check what direction the drag was
                 //First check which axis
-                if (Mathf.Abs(lp.x - fp.x) > Mathf.Abs(lp.y - fp.y))
+                if (Mathf.Abs(lastP.x - firstP.x) > Mathf.Abs(lastP.y - firstP.y))
                 {   //If the horizontal movement is greater than the vertical movement...
 
-                    if ((lp.x > fp.x) && canShoot)  //If the movement was to the right)
+                    if ((lastP.x > firstP.x) && canShoot)  //If the movement was to the right)
                     {   //Right move
                         rb.AddForce((new Vector3(x, 10, 15)) * power);
                     }
@@ -95,7 +83,7 @@ public class MouseDragControl : MonoBehaviour
                 }
                 else
                 {   //the vertical movement is greater than the horizontal movement
-                    if (lp.y > fp.y)  //If the movement was up
+                    if (lastP.y > firstP.y)  //If the movement was up
                     {   //Up move
                         rb.AddForce((new Vector3(x, y, 15)) * power);
                     }
@@ -130,8 +118,6 @@ public class MouseDragControl : MonoBehaviour
     IEnumerator DelayAdd()
     {
         yield return new WaitForSeconds(0.2f);  //I have added a delay of 0.2 seconds
-        oppKickDir = new Vector3(Random.Range(-4f, 4f), Random.Range(5f, 10f), Random.Range(6f, 12f)); //generate a random x and y value in the range mentioned
-        rb.AddForce(oppKickDir, ForceMode.Impulse); //add the force 
     }
 
     //function to check if its a goal
@@ -149,17 +135,11 @@ public class MouseDragControl : MonoBehaviour
         {
             scorePlayer++; //add aditional point for hot zone
             count++;
-            //other.gameObject.SetActive (false);
-            //other.gameObject.setActive (true);
-            //GetComponent<Renderer>().material.color = Color.green;
         }
         if (other.gameObject.name == "GoalTargettopright" && !triggered)
         {
             scorePlayer++; //add aditional point for hot zone
             count++;
-            //other.gameObject.SetActive (false);
-            //other.gameObject.setActive (true);
-            //GoalTargets.material.color = Color.green;
         }
 
     }
