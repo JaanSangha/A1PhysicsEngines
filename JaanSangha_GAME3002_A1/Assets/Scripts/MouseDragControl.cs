@@ -66,7 +66,7 @@ public class MouseDragControl : MonoBehaviour
 
                 //x and y repesent force to be added in the x, y axes.
                 float x = (lastP.x - firstP.x) / Screen.height * factor;
-                float y = (lastP.y - firstP.y) / Screen.height * factor;
+                float y = ((lastP.y - firstP.y) / Screen.height * factor) / 1.3f;
                 //Now check what direction the drag was
                 //First check which axis
                 if (Mathf.Abs(lastP.x - firstP.x) > Mathf.Abs(lastP.y - firstP.y))
