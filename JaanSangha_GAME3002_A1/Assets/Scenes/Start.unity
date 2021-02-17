@@ -318,7 +318,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000015259, y: 64}
+  m_AnchoredPosition: {x: -0.000015259, y: 121}
   m_SizeDelta: {x: 1082.9983, y: 406.9782}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &478544289
@@ -334,7 +334,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -354,15 +354,18 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: '*Click Left Mouse button and drag to shoot the ball
+  m_Text: '*Click Left Mouse button and drag forward to shoot the ball
 
-    *The power of
-    your shot depends on the drag
+    *The
+    power of your shot depends on the drag
 
-    *Press "P" in game to bring up pause menu
+    *Press "P" in game to bring up pause
+    menu
 
-    *Hitting
-    the targets give extra points'
+    *Hitting the targets give extra points
+
+    *Try to get best score
+    after 5 shots'
 --- !u!222 &478544290
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -573,7 +576,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Exit
+  m_Text: Back
 --- !u!222 &895014844
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -738,8 +741,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: e166eb3e28367fe4e898c3fc0fa5318f, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -790,8 +793,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 266.5}
-  m_SizeDelta: {x: 421.791, y: 79.7772}
+  m_AnchoredPosition: {x: -0.000026703, y: 243}
+  m_SizeDelta: {x: 523.1603, y: 99.0856}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1106260241
 MonoBehaviour:
@@ -806,7 +809,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -815,11 +818,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 70
+    m_FontSize: 85
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 7
-    m_MaxSize: 70
+    m_MaxSize: 85
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -1448,8 +1451,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: e166eb3e28367fe4e898c3fc0fa5318f, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1523,8 +1526,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0000076294, y: -63}
-  m_SizeDelta: {x: 234.2704, y: 70.8487}
+  m_AnchoredPosition: {x: 0.000026703, y: -63}
+  m_SizeDelta: {x: 310.2176, y: 70.8487}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1770316234
 MonoBehaviour:
@@ -1706,7 +1709,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Controls
+  m_Text: How to Play
 --- !u!222 &1993779296
 CanvasRenderer:
   m_ObjectHideFlags: 0

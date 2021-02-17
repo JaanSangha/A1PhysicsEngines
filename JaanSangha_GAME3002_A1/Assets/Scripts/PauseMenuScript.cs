@@ -6,10 +6,11 @@ using UnityEngine.SceneManagement;
 public class PauseMenuScript : MonoBehaviour
 {
     public bool GameIsPaused = false;
-    public bool GameOver = false;
-    public static bool TriggerGameOver = false;
 
     public GameObject pauseMenu;
+    public GameObject endMenu; 
+    public GameObject scoreText;
+    public GameObject goalDisplay;
 
     // Start is called before the first frame update
     void Start()
@@ -20,11 +21,12 @@ public class PauseMenuScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (TriggerGameOver)
+        GameObject Football = GameObject.Find("Football");
+        MouseDragControl mouseDragControl = Football.GetComponent<MouseDragControl>();
+
+        if (mouseDragControl.gameIsOver)
         {
-            TriggerGameOver = false;
-            GameOver = true;
-            Pause();
+            GameOver();
         }
         if (Input.GetKeyDown(KeyCode.P))
         {
@@ -37,6 +39,7 @@ public class PauseMenuScript : MonoBehaviour
                 Pause();
             }
         }
+
     }
 
     public void Pause()
@@ -46,11 +49,30 @@ public class PauseMenuScript : MonoBehaviour
         GameIsPaused = true;
     }
 
+    public void GameOver()
+    {
+        endMenu.SetActive(true);
+        goalDisplay.SetActive(false);
+        Time.timeScale = 0;
+        GameIsPaused = true;
+    }
+
     public void Resume()
     {
-        if (GameOver) return;
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
         GameIsPaused = false;
+    }
+
+    public void RestartLevel()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene("Stadium");
+    }
+
+    public void LoadMenu()
+    {
+        SceneManager.LoadScene("Start");
+        Time.timeScale = 1;
     }
 }

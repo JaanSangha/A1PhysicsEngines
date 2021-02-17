@@ -9,14 +9,15 @@ public class MouseDragControl : MonoBehaviour
     private Vector3 lastP; //Last mouse position
     private float dragDistance;  //Distance needed for a swipe to register
     public bool triggered = false;
+    public bool gameIsOver = false;
 
     //variables for determining the shot power and position
     public float power;  //shot power
     private Vector3 footballPos;    //initial ball position 
     private float factor = 34f; //force of shot
     public bool canShoot = true;  //check if shot can be taken
-    public int scorePlayer = 0;
-    public int turn = 0;   //0 for striker, 1 for goalie
+   // public int scorePlayer = 0;
+    public int turn = 0;   
     public bool isGameOver = false; //flag for game over detection
     private bool returned = true;  //check if the ball is returned to its initial position
     public bool isKickedPlayer = false;     //check if the player has kicked the ball
@@ -25,6 +26,31 @@ public class MouseDragControl : MonoBehaviour
     private int count;
     private GUIStyle guiStyle = new GUIStyle();
     public TargetColour other;
+    public int shotsTaken = 0;  //shots player has taken
+    public GameObject[] shots;  //ui goal records
+    public enum SHOT_TYPE       //specify type of shot
+    {
+        GoalOne = 0,
+        GoalTwo = 1,
+        GoalThree = 2,
+        GoalFour = 3,
+        GoalFive = 4,
+        MissOne = 5,
+        MissTwo = 6,
+        MissThree = 7,
+        MissFour = 8,
+        MissFive = 9,
+        TargetOne = 10,
+        TargetTwo = 11,
+        TargetThree = 12,
+        TargetFour = 13,
+        TargetFive = 14,
+    }   
+
+    public void PresentShot(SHOT_TYPE shottype)
+    {
+        shots[(int)shottype].SetActive(true);
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -61,16 +87,15 @@ public class MouseDragControl : MonoBehaviour
         {
             lastP = Input.mousePosition;
 
-            if (Mathf.Abs(lastP.x - firstP.x) > dragDistance || Mathf.Abs(lastP.y - firstP.y) > dragDistance)
-            {   //It's a drag
-
-                //x and y repesent force to be added in the x, y axes.
+            if (Mathf.Abs(lastP.x - firstP.x) > dragDistance || Mathf.Abs(lastP.y - firstP.y) > dragDistance)   //check if it is a mouse drag
+            {   
+                //force to be added in the x, y axes.
                 float x = (lastP.x - firstP.x) / Screen.height * factor;
                 float y = ((lastP.y - firstP.y) / Screen.height * factor) / 1.3f;
-                //Now check what direction the drag was
-                //First check which axis
-                if (Mathf.Abs(lastP.x - firstP.x) > Mathf.Abs(lastP.y - firstP.y))
-                {   //If the horizontal movement is greater than the vertical movement...
+
+                //find direction by axis
+                if (Mathf.Abs(lastP.x - firstP.x) > Mathf.Abs(lastP.y - firstP.y))  //x > y movement
+                {   
 
                     if ((lastP.x > firstP.x) && canShoot)  //If the movement was to the right)
                     {   //Right move
@@ -82,18 +107,16 @@ public class MouseDragControl : MonoBehaviour
                     }
                 }
                 else
-                {   //the vertical movement is greater than the horizontal movement
-                    if (lastP.y > firstP.y)  //If the movement was up
-                    {   //Up move
-                        rb.AddForce((new Vector3(x, y, 15)) * power);
-                    }
-                    else
-                    {   //Down move
-
+                {   //y > x movement (main movement)
+                    if (lastP.y > firstP.y)  //make sure movement was up/ forward
+                    {  
+                        rb.AddForce((new Vector3(x, y, 20)) * power);
                     }
                 }
             }
 
+            shotsTaken = shotsTaken + 1;
+    
             canShoot = false;
             returned = false;
             isKickedPlayer = true;
@@ -110,8 +133,8 @@ public class MouseDragControl : MonoBehaviour
         other = GameObject.Find("GoalTargettopleft").GetComponent<TargetColour>();
         other.ResetColour();
 
-        canShoot = true;     //set the canshoot flag to true
-        returned = true;     //set football returned flag to true as well
+        canShoot = true;    
+        returned = true;     //set ball returned 
         triggered = false;
     }
 
@@ -126,24 +149,87 @@ public class MouseDragControl : MonoBehaviour
         //check if the football has triggered an object named GoalLine and triggered is not true
         if (other.gameObject.name == "GoalLine" && !triggered)
         {
-
-            scorePlayer++; //increment the goals tally of player
+            triggered = true;   // make sure ball doesnt hit goal line twice
             count++;
             countText.text = "SCORE: " + count.ToString();
+            if (shotsTaken == 1)
+            {
+                PresentShot(SHOT_TYPE.GoalOne);
+            }
+            else if (shotsTaken == 2)
+            {
+                PresentShot(SHOT_TYPE.GoalTwo);
+            }
+            else if (shotsTaken == 3)
+            {
+                PresentShot(SHOT_TYPE.GoalThree);
+            }
+            else if (shotsTaken == 4)
+            {
+                PresentShot(SHOT_TYPE.GoalFour);
+            }
+            else if (shotsTaken == 5)
+            {
+                PresentShot(SHOT_TYPE.GoalFive);
+                gameIsOver = true;
+            }
         }
-        if (other.gameObject.name == "GoalTargettopleft" && !triggered)
+        if (other.gameObject.name == "GoalTargettopleft" || other.gameObject.name == "GoalTargettopright" && !triggered)
         {
-            scorePlayer++; //add aditional point for hot zone
-            count++;
+            triggered = true;
+            count += 2; 
+            countText.text = "SCORE: " + count.ToString();
+            if (shotsTaken == 1)
+            {
+                PresentShot(SHOT_TYPE.TargetOne);
+            }
+            else if (shotsTaken == 2)
+            {
+                PresentShot(SHOT_TYPE.TargetTwo);
+            }
+            else if (shotsTaken == 3)
+            {
+                PresentShot(SHOT_TYPE.TargetThree);
+            }
+            else if (shotsTaken == 4)
+            {
+                PresentShot(SHOT_TYPE.TargetFour);
+            }
+            else if (shotsTaken == 5)
+            {
+                PresentShot(SHOT_TYPE.TargetFive);
+                gameIsOver = true;
+            }
         }
-        if (other.gameObject.name == "GoalTargettopright" && !triggered)
+  
+        if (other.gameObject.name == "MissLineLeft" || other.gameObject.name == "MissLineRight" || other.gameObject.name == "MissLineAbove" && !triggered)
         {
-            scorePlayer++; //add aditional point for hot zone
-            count++;
+            if (shotsTaken == 1)
+            {
+                PresentShot(SHOT_TYPE.MissOne);
+            }                       
+            else if (shotsTaken == 2)
+            {                     
+                PresentShot(SHOT_TYPE.MissTwo);
+            }                         
+            else if (shotsTaken == 3) 
+            {                         
+                PresentShot(SHOT_TYPE.MissThree);
+            }                        
+            else if (shotsTaken == 4) 
+            {                       
+                PresentShot(SHOT_TYPE.MissFour);
+            }                        
+            else if (shotsTaken == 5) 
+            {                        
+                PresentShot(SHOT_TYPE.MissFive);
+                DelayAdd();
+                gameIsOver = true;
+            }
         }
 
     }
-
+    //add score to screen
     void OnGUI()
     {
         //check if game is not over, if so, display the score
